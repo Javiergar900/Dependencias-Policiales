@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa de Dependencias Policiales. Partido de La Plata</title>
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    /* Estilos generales */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f8ff; /* Fondo celeste claro */
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      color: #0077b6; /* Azul oscuro */
+      margin-top: 20px;
+    }
+
+    p {
+      text-align: center;
+      color: #555;
+    }
+
+    /* Estilos para el mapa */
+    #map {
+      height: 700px;
+      width: 95%;
+      margin: 20px auto;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Estilos para los popups */
+    .leaflet-popup-content {
+      font-size: 14px;
+      color: #0077b6; /* Azul oscuro */
+    }
+
+    .leaflet-popup-content b {
+      color: #00b4d8; /* Azul celeste */
+    }
+
+    .leaflet-popup-tip,
+    .leaflet-popup-content-wrapper {
+      background-color: #f0f8ff; /* Fondo celeste claro */
+      border: 1px solid #00b4d8; /* Borde azul celeste */
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Mapa de Dependencias Policiales. Partido de La Plata</h1>
+  <p>Haz clic en los marcadores para ver el titular de la comisaría.</p>
+
+  <!-- Contenedor del mapa -->
+  <div id="map"></div>
+
+  <!-- Leaflet JavaScript -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // Inicializar el mapa
+    const map = L.map('map').setView([-34.9215, -57.9545], 13); // Coordenadas de La Plata
+
+    // Añadir la capa de OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Datos de las comisarías (coordenadas y titulares)
+    const comisarias = [
+      {
+        nombre: "Comisaría 1",
+        coordenadas: [-34.9215, -57.9545], // Coordenadas de ejemplo
+        titular: "Comisario Juan Pérez"
+      },
+      {
+        nombre: "Comisaría 2",
+        coordenadas: [-34.9100, -57.9400], // Coordenadas de ejemplo
+        titular: "Comisaria María Gómez"
+      },
+      {
+        nombre: "Comisaría 3",
+        coordenadas: [-34.9300, -57.9600], // Coordenadas de ejemplo
+        titular: "Comisario Carlos López"
+      }
+    ];
+
+    // Añadir marcadores al mapa
+    comisarias.forEach(comisaria => {
+      const marker = L.marker(comisaria.coordenadas, {
+        icon: L.icon({
+          iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png', // Icono de marcador
+          iconSize: [25, 41], // Tamaño del ícono
+          iconAnchor: [12, 41], // Punto de anclaje del ícono
+          popupAnchor: [1, -34] // Posición del popup
+        })
+      }).addTo(map);
+
+      // Contenido del popup
+      const popupContent = `
+        <b>${comisaria.nombre}</b><br>
+        <span style="color: #00b4d8;">Titular:</span> ${comisaria.titular}
+      `;
+
+      // Vincular el popup al marcador
+      marker.bindPopup(popupContent);
+    });
+  </script>
+</body>
+</html>
